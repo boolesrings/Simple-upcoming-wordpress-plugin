@@ -4,3 +4,7 @@ ul.upcoming .upcoming_date {
 ul.upcoming div.sharing {
 	display: none;
 }
+ul.upcoming.upcoming-post {
+	list-style-type: none;
+	margin-left: 0;
+}

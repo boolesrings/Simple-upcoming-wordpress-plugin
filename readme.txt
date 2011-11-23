@@ -15,24 +15,36 @@ using the [upcoming] shortcode.
 
 This is another simple plugin to add a little functionality of a
 calendar to your blog.  With this plugin you can specify, for any of
-your posts, an associated "EventDate".  Then, elsewhere on your site,
-you can retrieve a list of future events using the [upcoming]
-shortcode.
+your posts, an associated "Event Date" using the post editor.
+Then, elsewhere on your site, you can retrieve a list of future events
+using the [upcoming] shortcode.
 
 The [upcoming] shortcode supports several options:
 
-* show_excerpt: if defined, an excerpt of the post will be included below the
-post title
+* category_name: If defined, show posts only from this category.  You can
+provide multiple comma-separated category names.
+
+* type: One of "list" (default), "excerpt", or "post".  If "list", then just
+the titles are shown.  If "excerpt" then the post excerpt is placed below
+the tittle.  If "post" then the title is promoted to <h2 class="entry-title">
+and the full post (up to the [more] tag) is shown.
+
+* null_text: If no results are returned, shows this text.  Defaults to
+'(none)'.
+
+* class_name: If defined, adds this class name to the generated <ul>.
+Useful for custom styling.
 
 * show_date: if defined, the date will precede the post title
 
 * date-format: if writing the date, do so using this php date format
 
 The output can then be further formatted using CSS.  We recommend the plugin
-"Improved Simpler CSS" for easy modification to the output!
+[Improved Simpler CSS](http://wordpress.org/extend/plugins/imporved-simpler-css/)
+for easy modification to the output!
 
 Fork this plugin on
-[GitHub](https://github.com/scoskey/Simple-upcoming-wordpress-plugin)
+[GitHub](http://github.com/scoskey/Simple-upcoming-wordpress-plugin)
 
 == Installation ==
 
