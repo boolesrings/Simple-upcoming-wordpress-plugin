@@ -65,15 +65,15 @@ function upcoming_loop( $atts ) {
 	// Arguments to the shortcode
 	extract( shortcode_atts(  array(
         	'category_name' => '',
-		'type' => 'list',
+		'style' => 'list',
 		'null_text' => '(none)',
 		'class_name' => '',
 		'show_date' => '',
 		'date_format' => 'F j, Y',
 	), $atts ) );
 
-	if ( $type != "list" && $type != "excerpt" && $type != "post" ) {
-		$type = "list";
+	if ( $style != "list" && $style != "excerpt" && $style != "post" ) {
+		$style = "list";
 	}
 
 	/*
@@ -94,7 +94,7 @@ function upcoming_loop( $atts ) {
 	}
 	
 	// building the output
-	$ret_val = "<ul class='upcoming upcoming-$type";
+	$ret_val = "<ul class='upcoming upcoming-$style";
 	if ( $class_name ) {
 		$ret_val .= " " . $class_name;
 	}
@@ -106,8 +106,8 @@ function upcoming_loop( $atts ) {
 			$ret_val .= "category-" . $category->slug . " ";
 		}
 		$ret_val .= "'>";
-		if ( $type == "post" ) {
-			$ret_val .= "<h2 class='entry-title'>";
+		if ( $style == "post" ) {
+			$ret_val .= "<h2 class='upcoming-entry-title'>";
 		}
 		if ( $show_date ) {
 			$ret_val .= "<span class='upcoming_date'>";
@@ -119,15 +119,15 @@ function upcoming_loop( $atts ) {
 		$ret_val .= "<span class='upcoming_title'><a href='" . get_permalink() . "'>";
 		$ret_val .= the_title( '', '', false);
 		$ret_val .= "</a></span>";
-		if ( $type == "post" ) {
+		if ( $style == "post" ) {
 			$ret_val .= "</h2>";
 		}
 		$ret_val .= "\n";
-		if ( $type == "excerpt" ) {
+		if ( $style == "excerpt" ) {
 			$ret_val .= "<div>\n";
 			$ret_val .= get_the_excerpt();
 			$ret_val .= "</div>\n";			
-		} elseif ( $type == "post" ) {
+		} elseif ( $style == "post" ) {
 			$ret_val .= "<div>\n";
 			$more = 0; // Tell wordpress to respect the [more] tag for the next line:
 			$ret_val .= apply_filters( 'the_content', get_the_content() );
