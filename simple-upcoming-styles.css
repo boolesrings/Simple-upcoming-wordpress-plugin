@@ -1,0 +1,6 @@
+ul.upcoming .upcoming_date {
+	font-weight: bold;
+}
+ul.upcoming div.sharing {
+	display: none;
+}
