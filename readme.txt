@@ -4,8 +4,8 @@ Contributors: sgcoskey
 Donate link: http://boolesrings.org
 Tags: events, event, upcoming, calendar
 Requires at least: 3.0
-Tested up to: 3.2.1
-Stable tag: 0.1.2
+Tested up to: 3.3
+Stable tag: 0.1.3
 
 Make an upcoming events calendar.  Just add an "Event Date" to any
 post, and then use the [upcoming] shortcode to list upcoming events.
@@ -53,6 +53,8 @@ Report bugs, give feedback, or fork this plugin on
 Nothing unusual here!
 
 == Changelog ==
+
+0.1.3 bug fix: added nopaging so all relevant posts appear
 
 0.1.2 bug fix: sticky posts were always appearing
 
