@@ -85,7 +85,7 @@ function upcoming_loop( $atts ) {
 	if ( $category_name ) {
 		$query .= "category_name=" . $category_name . '&';
 	}
-	$query .= 'meta_key=EventDate&orderby=meta_value&ignore_sticky_posts=1';
+	$query .= 'meta_key=EventDate&orderby=meta_value&ignore_sticky_posts=1&nopaging=true';
 	add_filter( 'posts_where', 'where_future' );
 	$query_results = new WP_Query($query);
 	remove_filter( 'posts_where', 'where_future' );
