@@ -46,11 +46,10 @@ used.  The default is the Date Format value from the General Settings
 page.  I recommend `"F j, Y"`, which displays as "May 12, 2012".
 
 * **q**: Arbitrary additional arguments to pass to the query.  See the
-wordpress
-[WP_Query](http://codex.wordpress.org/Class_Reference/WP_Query) page
-for available syntax.  For example, to show only posts with tag
-"workshop", and only 3 such posts, you would write
-`[posts q="posts_per_page=3&tag=workshop"]`.
+[WP_Query](http://codex.wordpress.org/Class_Reference/WP_Query/#Parameters)
+page for available syntax.  For example, to show only posts with tag
+"workshop", and only 3 such posts, you would write `[posts
+q="posts_per_page=3&tag=workshop"]`.
 
 The output can then be further formatted using CSS.  We recommend the
 plugin [Improved Simpler
