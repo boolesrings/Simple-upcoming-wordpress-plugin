@@ -20,8 +20,9 @@ future events using the `[upcoming]` shortcode on any post or page.
 
 The shortcode supports several options:
 
-* **category_name**: If defined, show posts only from this category.
-You can provide multiple comma-separated category names.
+* **category_name**: If defined, show posts only from these
+categories.  You can provide multiple comma-separated category
+identifiers (slugs).
 
 * **style**: One of *list* (default) or *post*.  If it is *list*, then
 the list style is indented and bulleted.  If it is *post* then the
