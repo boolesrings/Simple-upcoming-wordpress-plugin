@@ -36,8 +36,8 @@ shown.
 * **null_text**: If no results are returned, shows this text.
 Defaults to `(none)`.
 
-* **class_name**: If defined, adds this class name to the generated
-`<ul>` tag.  Useful for custom styling.
+* **class_name**: If defined, adds this class name to the generated `<ul>`
+tag.  Useful for custom styling.
 
 * **show_date**: If defined, the date will precede the post title
 
