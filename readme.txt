@@ -47,8 +47,8 @@ page.  I recommend `"F j, Y"`, which displays as "May 12, 2012".
 
 * **q**: Arbitrary additional arguments to pass to the query.  See the
 [WP_Query](http://codex.wordpress.org/Class_Reference/WP_Query/#Parameters)
-page for available syntax.  For example, to show only posts with tag
-"workshop", and only 3 such posts, you would write `[posts
+page for available syntax.  For example, to show only events with tag
+"workshop", and only 3 such events, you would write `[upcoming
 q="posts_per_page=3&tag=workshop"]`.
 
 The output can then be further formatted using CSS.  We recommend the
