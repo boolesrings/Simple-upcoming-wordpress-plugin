@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Simple upcoming
  * Description: Assign an event date to any post.  List your upcoming events using the shortcode [upcoming].
- * Version: 0.1.2
+ * Version: 0.2
  * Author: Samuel Coskey, Victoria Gitman
  * Author URI: http://boolesrings.org
 */
@@ -17,13 +17,13 @@ function upcoming_add_eventdate_box() {
 	add_meta_box( 'eventdate', 'Event Date', 'upcoming_eventdate_box', 'post', 'side' );
 }
 function upcoming_eventdate_box( $post ) {
-	echo '<p>If this post corresponds to an upcoming event, enter the date of that event here.  Use any format recognized by the php <a href="http://php.net/manual/en/function.strtotime.php">strtotime</a> function; it will be converted to the default format mm/dd/yyyy.</p>';
+	echo '<p>If this post corresponds to an upcoming event, enter the date of that event here.  Use any format recognized by the php <a href="http://php.net/manual/en/function.strtotime.php">strtotime</a> function; it will be converted to your the default date format specified in your general settings.</p>';
 	wp_nonce_field( plugin_basename( __FILE__ ), 'upcoming_noncename' );
 	echo '<label for="upcoming_date">';
 	echo 'Event Date';
 	echo '</label>' . "\n";
 	echo '<input type="text" id="eventdate" name="eventdate" size="20" value="';
-	echo get_post_meta($post->ID, 'EventDate', true);
+	echo date( get_option('date_format'), strtotime(get_post_meta($post->ID, 'EventDate', true)) );
 	echo '" />' . "\n";
 }
 add_action( 'save_post', 'upcoming_save_eventdate' );
@@ -45,7 +45,9 @@ function upcoming_save_eventdate( $post_id ) {
 	// OK, we're authenticated: we need to find and save the data
 	$new_date = $_POST['eventdate'];
 	if ( $new_date ) {
-		$new_date = date( "m/d/Y", strtotime( $new_date ) );
+		// if the user types 'today' this will ensure the timezone is properly understood
+		date_default_timezone_set(get_option('timezone_string'));
+		$new_date = date( "Ymd", strtotime( $new_date ) );
 		update_post_meta( $post_id, 'EventDate', $new_date );
 	} else {
 		delete_post_meta( $post_id, 'EventDate' );
@@ -67,14 +69,25 @@ function upcoming_loop( $atts ) {
 	extract( shortcode_atts(  array(
         	'category_name' => '',
 		'style' => 'list',
+		'text' => 'none',
 		'null_text' => '(none)',
 		'class_name' => '',
 		'show_date' => '',
-		'date_format' => 'F j, Y',
+		'date_format' => get_option('date_format'), // I recommend 'F j, Y'
+		'q' => '',
 	), $atts ) );
 
-	if ( $style != "list" && $style != "excerpt" && $style != "post" ) {
+	/*
+	 * sanitize the input a little bit
+	*/
+	if ( $style != "list" && $style != "post" ) {
 		$style = "list";
+	}
+	if ( $text != "none" && $text != "excerpt" && $text != "normal" ) {
+		$text = "none";
+	}
+	if ( $q ) {
+		$q = str_replace ( "&#038;", "&", $q );
 	}
 
 	/*
@@ -85,7 +98,10 @@ function upcoming_loop( $atts ) {
 	if ( $category_name ) {
 		$query .= "category_name=" . $category_name . '&';
 	}
-	$query .= 'meta_key=EventDate&orderby=meta_value&ignore_sticky_posts=1&nopaging=true';
+	$query .= 'meta_key=EventDate&orderby=meta_value&order=ASC&ignore_sticky_posts=1&posts_per_page=-1';
+	if ( $q ) {
+		$query .= "&" . $q;
+	}
 	add_filter( 'posts_where', 'where_future' );
 	$query_results = new WP_Query($query);
 	remove_filter( 'posts_where', 'where_future' );
@@ -94,7 +110,9 @@ function upcoming_loop( $atts ) {
 		return "<p>" . wp_kses($null_text,array()) . "</p>\n";
 	}
 	
-	// building the output
+	/*
+	 * building the output
+	*/
 	$ret_val = "<ul class='upcoming upcoming-$style";
 	if ( $class_name ) {
 		$ret_val .= " " . $class_name;
@@ -124,14 +142,14 @@ function upcoming_loop( $atts ) {
 			$ret_val .= "</h2>";
 		}
 		$ret_val .= "\n";
-		if ( $style == "excerpt" ) {
+		if ( $text == "excerpt" ) {
 			$ret_val .= "<div>\n";
 			$ret_val .= get_the_excerpt();
 			$ret_val .= "</div>\n";			
-		} elseif ( $style == "post" ) {
+		} elseif ( $text == "normal" ) {
 			$ret_val .= "<div>\n";
 			$more = 0; // Tell wordpress to respect the [more] tag for the next line:
-			$ret_val .= apply_filters( 'the_content', get_the_content() );
+			$ret_val .= apply_filters( 'the_content', get_the_content("") );
 			$ret_val .= "</div>\n";
 		}
 		$ret_val .= "</li>";
@@ -148,7 +166,7 @@ function upcoming_loop( $atts ) {
  * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_where
 */
 function where_future ($where) {
-	$where .= "AND STR_TO_DATE(meta_value,'%m/%d/%Y') >= CURDATE()";
+	$where .= "AND STR_TO_DATE(meta_value,'%Y%m%d') >= CURDATE()";
 	return $where;
 }
 
