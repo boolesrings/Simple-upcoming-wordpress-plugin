@@ -23,7 +23,9 @@ function upcoming_eventdate_box( $post ) {
 	echo 'Event Date';
 	echo '</label>' . "\n";
 	echo '<input type="text" id="eventdate" name="eventdate" size="20" value="';
-	echo date( get_option('date_format'), strtotime(get_post_meta($post->ID, 'EventDate', true)) );
+	if ( $the_event_date ) {
+	  echo date( get_option('date_format'), strtotime($the_event_date) );
+	}
 	echo '" />' . "\n";
 }
 add_action( 'save_post', 'upcoming_save_eventdate' );
