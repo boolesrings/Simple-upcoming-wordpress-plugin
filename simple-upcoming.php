@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Simple upcoming
  * Description: Assign an event date to any post.  List your upcoming events using the shortcode [upcoming].
- * Version: 0.2
+ * Version: 0.2.1
  * Author: Samuel Coskey, Victoria Gitman
  * Author URI: http://boolesrings.org
 */
@@ -23,8 +23,9 @@ function upcoming_eventdate_box( $post ) {
 	echo 'Event Date';
 	echo '</label>' . "\n";
 	echo '<input type="text" id="eventdate" name="eventdate" size="20" value="';
+	$the_event_date = get_post_meta($post->ID, 'EventDate', true);
 	if ( $the_event_date ) {
-	  echo date( get_option('date_format'), strtotime($the_event_date) );
+		echo date( get_option('date_format'), strtotime($the_event_date) );
 	}
 	echo '" />' . "\n";
 }
