@@ -1,6 +1,6 @@
 === Simple upcoming ===
 
-Contributors: sgcoskey
+Contributors: sgcoskey, vgitman
 Donate link: http://boolesrings.org
 Tags: events, event, upcoming, calendar
 Requires at least: 3.0
