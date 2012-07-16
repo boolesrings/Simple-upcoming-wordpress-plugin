@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Simple upcoming
  * Description: Assign an event date to any post.  List your upcoming events using the shortcode [upcoming].
- * Version: 0.2.1
+ * Version: 0.3
  * Author: Samuel Coskey, Victoria Gitman
  * Author URI: http://boolesrings.org
 */
@@ -71,6 +71,7 @@ function upcoming_loop( $atts ) {
 	// Arguments to the shortcode
 	extract( shortcode_atts(  array(
         	'category_name' => '',
+		'days_old' => 0,
 		'style' => 'list',
 		'text' => 'none',
 		'null_text' => '(none)',
@@ -105,11 +106,17 @@ function upcoming_loop( $atts ) {
 	if ( $q ) {
 		$query .= "&" . $q;
 	}
-	add_filter( 'posts_where', 'where_future' );
+	$where_future = function ( $where ) use( $days_old ) {
+		return $where . "AND STR_TO_DATE(meta_value,'%Y%m%d') >= CURDATE()"
+			      . " - INTERVAL $days_old DAY";
+	};
+	if ( is_numeric( $days_old ) ) {
+		add_filter( 'posts_where', $where_future );
+	}
 	$query_results = new WP_Query($query);
-	remove_filter( 'posts_where', 'where_future' );
+	remove_filter( 'posts_where', $where_future );
 
-	if ( $query_results->post_count ==0 ) {
+	if ( $query_results->post_count == 0 ) {
 		return "<p>" . wp_kses($null_text,array()) . "</p>\n";
 	}
 	
@@ -163,15 +170,6 @@ function upcoming_loop( $atts ) {
 	return $ret_val;
 }
 
-/*
- * additional filter on the query
- * needed since we don't know what day it is
- * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_where
-*/
-function where_future ($where) {
-	$where .= "AND STR_TO_DATE(meta_value,'%Y%m%d') >= CURDATE()";
-	return $where;
-}
 
 /*
  * Load our default style sheet

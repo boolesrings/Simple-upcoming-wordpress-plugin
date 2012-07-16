@@ -4,8 +4,8 @@ Contributors: sgcoskey, vgitman
 Donate link: http://boolesrings.org
 Tags: events, event, upcoming, calendar
 Requires at least: 3.0
-Tested up to: 3.3.1
-Stable tag: 0.2.1
+Tested up to: 3.4.1
+Stable tag: 0.3
 
 Make an upcoming events calendar.  Just add an "Event Date" to any
 post, and then use the [upcoming] shortcode to list upcoming events.
@@ -23,6 +23,11 @@ The shortcode supports several options:
 * **category_name**: If defined, show posts only from these
 categories.  You can provide multiple comma-separated category
 identifiers (slugs).
+
+* **days_old**: Show events whose Event Date is no more than this many
+days past.  The default is `0`, which shows only events taking place
+today or later.  If you enter a non-numeric value such as **infinity**,
+then all matching events will be shown regardless of the Event Date.
 
 * **style**: One of *list* (default) or *post*.  If it is *list*, then
 the list style is indented and bulleted.  If it is *post* then the
@@ -66,13 +71,15 @@ Nothing unusual here!
 
 == Changelog ==
 
+`0.3` added shortcode parameter **days_old**.
+
 `0.2.1` bug fix: the default event date was the start of 1970 rather
 than no date at all.
 
 `0.2` Unfortunately I have changed the way dates are stored in the
 database.  This means you will have to open and re-save any posts you
 have with the "Event Date" set.  I have also changed the shortcode
-parameters slightly with *style* becoming both *style* and *text*.
+parameters slightly with **style** becoming both **style** and **text**.
 Please have a look at the syntax.  I apologize for the inconvenience!
 
 big fixes: dates in different years were sorted incorrectly.  the
